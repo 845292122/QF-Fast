@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+// 常用命令
+// rm -rf prisma/migrations 删除旧的迁移文件
+// npx prisma migrate reset 重新迁移
+// npx prisma init 初始化prisma
+// npx prisma format 格式化schema
+// npx prisma migrate dev --name init 初始化数据库
+// npx prisma generate  重新生成Prisma Client
+// npx prisma db push 同步数据库，不会删除数据
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// 用户表
+model Account {
+  id           Int           @id @default(autoincrement()) @db.UnsignedInt //主键
+  phone        String?       @db.VarChar(20) //  手机号
+  passwordHash String?       @db.VarChar(255) //密码
+  contact      String?       @db.VarChar(100) //联系人
+  shopName     String?       @db.VarChar(50) //店铺名称
+  creditCode   String?       @db.VarChar(50) //统一社会信用代码
+  address      String?       @db.VarChar(255) //地址
+  domain       String?       @db.VarChar(255) //域名
+  birthday     DateTime?     @db.DateTime //生日
+  avatar       String?       @db.VarChar(255) //头像
+  type         Int?          @default(0) @db.TinyInt //账户类型 1: 管理员 0: 用户
+  email        String?       @db.VarChar(50) //邮箱
+  status       Int?          @default(1) @db.TinyInt //状态 0: 普通用户; 1: 正在使用(P); 2: 到期(P);
+  loginIP      String?       @db.VarChar(255) //最后登录IP
+  loginDate    DateTime?     @db.Timestamp() //最后登录日期
+  remark       String?       @db.VarChar(500) //备注
+  isPremium    Int?          @default(0) @db.TinyInt //是否Premium, 1: 是; 0: 否
+  startDate    DateTime?     @db.DateTime //开始时间
+  endDate      DateTime?     @db.DateTime //结束时间
+  delFlag      Int           @default(0) @db.TinyInt //逻辑删除
+  createdAt    DateTime      @default(dbgenerated("NOW()")) @db.Timestamp //创建时间
+  updatedAt    DateTime      @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.Timestamp //最后更新时间
+  MemberGrade  MemberGrade[]
+  Member       Member[]
+
+  @@index([phone, contact, type, status, isPremium])
+  @@map("account")
+}
+
+model MemberGrade {
+  id          Int      @id @default(autoincrement()) @db.UnsignedInt //主键
+  value       Int?     @db.TinyInt //  等级值
+  name        String?  @db.VarChar(50) //  等级名称
+  description String?  @db.VarChar(255) //  等级描述
+  catchType   Int?     @db.TinyInt //  升级类型, 1: 积分; 2: 金额; 3: 时间;
+  catchValue  Float?   @default(0.00) @db.Float //  升级值
+  discount    Float?   @db.Float //  折扣
+  speedPoints Float?   @db.Float //  积分加速
+  status      Int?     @db.TinyInt //  状态, 1: 启用; 0: 禁用;
+  delFlag     Int?     @db.TinyInt //  删除标志, 1: 已删除; 0: 未删除;
+  createdAt   DateTime @default(dbgenerated("NOW()")) @db.Timestamp //创建时间
+  updatedAt   DateTime @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.Timestamp //最后更新时间
+
+  accountId Int      @db.UnsignedInt //  账号ID
+  account   Account  @relation(fields: [accountId], references: [id])
+  Member    Member[]
+
+  @@index([accountId, name])
+  @@map("member_grade")
+}
+
+model Member {
+  id        Int       @id @default(autoincrement()) @db.UnsignedInt //主键
+  phone     String?   @db.VarChar(20) //  手机号
+  avatar    String?   @db.VarChar(255) //  头像
+  name      String?   @db.VarChar(50) //  姓名
+  openId    String?   @db.VarChar(50) //  微信openId
+  idCard    String?   @db.VarChar(50) //  身份证号
+  startDate DateTime? @db.DateTime //  开始时间
+  endDate   DateTime? @db.DateTime //  结束时间
+  balance   Float?    @default(0.00) @db.Float //  余额
+  points    Float?    @default(0.00) @db.Float //  积分
+  gender    Int?      @db.TinyInt //  性别, 1: 男; 2: 女;
+  birthday  DateTime? @db.DateTime //  生日
+  delFlag   Int       @default(0) @db.TinyInt //逻辑删除
+  createdAt DateTime  @default(dbgenerated("NOW()")) @db.Timestamp //创建时间
+  updatedAt DateTime  @default(dbgenerated("NOW() ON UPDATE NOW()")) @db.Timestamp //最后更新时间
+
+  accountId     Int         @db.UnsignedInt //  账号ID
+  account       Account     @relation(fields: [accountId], references: [id])
+  memberGradeId Int         @db.UnsignedInt //  会员等级ID
+  memberGrade   MemberGrade @relation(fields: [memberGradeId], references: [id])
+
+  @@index([accountId, memberGradeId])
+  @@map("member")
+}
