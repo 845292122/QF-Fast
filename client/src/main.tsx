@@ -8,6 +8,7 @@ import zhCN from 'antd/locale/zh_CN'
 import './main.css'
 import '@icon-park/react/styles/index.css'
 import { App } from 'antd'
+import { ThemeProvider } from 'antd-style'
 
 const antdTheme: ThemeConfig = {
   token: {
@@ -17,37 +18,21 @@ const antdTheme: ThemeConfig = {
     colorWarning: '#ffc107',
     colorError: '#f44336',
     borderRadius: 2
-  },
-  components: {
-    Layout: {
-      lightSiderBg: '#f5f5f5'
-    },
-    Menu: {
-      itemBg: '#f3f4f4',
-      subMenuItemBg: '#f5f5f5',
-      itemColor: '#575757',
-      itemHoverBg: '#eaeaea',
-      popupBg: '#eaeaea',
-      itemSelectedBg: '#eaeaea',
-      itemSelectedColor: '#0c0c0c',
-      itemMarginInline: 10,
-      // itemHeight: 38,
-      itemBorderRadius: 6
-      // collapsedIconSize: 28
-    }
   }
 }
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ConfigProvider locale={zhCN} theme={antdTheme}>
-      <BrowserRouter>
-        <AuthRouter>
-          <App>
-            <Router />
-          </App>
-        </AuthRouter>
-      </BrowserRouter>
+      <ThemeProvider>
+        <BrowserRouter>
+          <AuthRouter>
+            <App>
+              <Router />
+            </App>
+          </AuthRouter>
+        </BrowserRouter>
+      </ThemeProvider>
     </ConfigProvider>
   </StrictMode>
 )
