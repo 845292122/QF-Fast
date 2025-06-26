@@ -1,5 +1,5 @@
 import { LogoutOutlined, ProfileTwoTone } from '@ant-design/icons'
-import { Down, HamburgerButton } from '@icon-park/react'
+import { Down, HamburgerButton, LeftBar, RightBar } from '@icon-park/react'
 import { Avatar, Dropdown, Menu, MenuProps, message, theme } from 'antd'
 import { createStyles } from 'antd-style'
 import { useAtomValue, useSetAtom } from 'jotai'
@@ -39,8 +39,7 @@ const useStyles = createStyles(() => {
       overflowY: 'auto'
     },
     siderAction: {
-      marginTop: 12,
-      marginBottom: 12,
+      marginTop: 6,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-around',
@@ -52,22 +51,30 @@ const useStyles = createStyles(() => {
       display: 'flex',
       alignItems: 'center',
       cursor: 'pointer',
-      paddingRight: '10px',
-      marginRight: '10px',
-      padding: '7px',
-      borderRadius: '7px',
-      ':hover': {
-        backgroundColor: 'rgb(229 231 235 / 0.5)'
-      }
+      padding: '7px'
     },
     actionTitle: {
       fontSize: '14px',
       fontWeight: '500'
+    },
+    collapseButtonWrapper: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      cursor: 'pointer',
+      borderRadius: 4,
+      padding: 6,
+      transitionProperty: 'all',
+      transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+      transitionDuration: '300ms',
+      ':hover': {
+        backgroundColor: 'rgb(229 231 235 / 0.5)'
+      }
     }
   }
 })
 
-const ActionBar: React.FC = () => {
+const ActionBar = () => {
   const { styles } = useStyles()
   const navigate = useNavigate()
   const setToken = useSetAtom(authJotai.tokenAtom)
@@ -110,6 +117,17 @@ const ActionBar: React.FC = () => {
         <Down theme="outline" size="16" fill="#333" strokeWidth={3} strokeLinecap="square" />
       </div>
     </Dropdown>
+  )
+}
+
+const CollapseButton = () => {
+  const { styles } = useStyles()
+
+  return (
+    <div className={styles.collapseButtonWrapper}>
+      <LeftBar theme="outline" size="20" fill="#000000" strokeWidth={4} />
+      {/* <RightBar theme="outline" size="20" fill="#000000" strokeWidth={4}/> */}
+    </div>
   )
 }
 
@@ -204,6 +222,7 @@ export default function AppSider() {
       </div>
       <div className={styles.siderAction}>
         <ActionBar />
+        <CollapseButton />
       </div>
     </>
   )
