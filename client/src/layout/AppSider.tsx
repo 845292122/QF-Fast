@@ -12,10 +12,8 @@ import { authJotai } from '~/store'
 
 type MenuItem = Required<MenuProps>['items'][number]
 
-const { useToken } = theme
-
-const useStyles = createStyles(() => {
-  const { token } = useToken()
+const useStyles = createStyles(theme => {
+  const { token } = theme
 
   return {
     siderLogo: {
@@ -56,6 +54,10 @@ const useStyles = createStyles(() => {
     actionTitle: {
       fontSize: '14px',
       fontWeight: '500'
+    },
+    actionSubTitle: {
+      fontSize: '12px',
+      fontWeight: '400'
     },
     collapseButtonWrapper: {
       display: 'flex',
@@ -110,10 +112,13 @@ const ActionBar = () => {
   ]
 
   return (
-    <Dropdown menu={{ items }} placement="top" trigger={['click']}>
+    <Dropdown menu={{ items }} placement="top">
       <div className={styles.actionBarContainer}>
-        <Avatar shape="square" style={{ marginRight: '10px' }} />
-        <span className={styles.actionTitle}>超级管理员</span>
+        <Avatar shape="square" style={{ marginRight: '15px' }} />
+        <div style={{ textAlign: 'center', marginRight: '10px' }}>
+          <div className={styles.actionTitle}>超级管理员</div>
+          <div className={styles.actionSubTitle}>超级管理员</div>
+        </div>
         <Down theme="outline" size="16" fill="#333" strokeWidth={3} strokeLinecap="square" />
       </div>
     </Dropdown>
@@ -132,8 +137,8 @@ const CollapseButton = () => {
 }
 
 export default function AppSider() {
-  const title = import.meta.env.VITE_APP_TITLE
   const { styles } = useStyles()
+  const title = import.meta.env.VITE_APP_TITLE
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const perms = useAtomValue(authJotai.permAtom)

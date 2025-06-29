@@ -51,7 +51,7 @@ const InfoModal = <T extends InfoModalFieldType[]>({
         title={title}
         open={visible}
         width={800}
-        destroyOnClose
+        destroyOnHidden
         onOk={handleOk}
         onCancel={onClose}
         maskClosable={false}

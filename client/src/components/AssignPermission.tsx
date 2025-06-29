@@ -57,7 +57,7 @@ const AssignPermission: React.FC<AssignPermissionProps> = ({
     <Modal
       title="分配权限"
       open={open}
-      destroyOnClose
+      destroyOnHidden
       onCancel={onCancel}
       onOk={() => onSubmit([...checkedKeys, ...halfCheckedKeys])}
     >

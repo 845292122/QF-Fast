@@ -47,7 +47,7 @@ const InfoDrawer = <T extends InfoDrawerFieldType[]>({
       title={title}
       onClose={onClose}
       open={visible}
-      destroyOnClose
+      destroyOnHidden
       maskClosable={false}
       {...rest}
       extra={<InfoDrawerExtra handleOk={handleOk} />}
