@@ -1,16 +1,27 @@
 import { LogoutOutlined, ProfileTwoTone } from '@ant-design/icons'
-import { Down, HamburgerButton, LeftBar, RightBar } from '@icon-park/react'
-import { Avatar, Dropdown, Menu, MenuProps, message, theme } from 'antd'
+import { HamburgerButton, LeftBar, RightBar } from '@icon-park/react'
+import { Avatar, Dropdown, Menu, MenuProps, message } from 'antd'
 import { createStyles } from 'antd-style'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import React, { useContext } from 'react'
 import { useLocation, useNavigate } from 'react-router'
 import AppLogo from '~/assets/react.svg'
 import ProfileContext from '~/context/ProfileContext'
 import BizRoutes from '~/router/routes'
-import { authJotai } from '~/store'
+import { appJotai, authJotai } from '~/store'
 
 type MenuItem = Required<MenuProps>['items'][number]
+
+const getOpenKeys = (path: string) => {
+  let newStr: string = ''
+  const newArr = []
+  const arr = path.split('/').map(i => '/' + i)
+  for (let i = 1; i < arr.length - 1; i++) {
+    newStr += arr[i]
+    newArr.push(newStr)
+  }
+  return newArr
+}
 
 const useStyles = createStyles(theme => {
   const { token } = theme
@@ -112,14 +123,13 @@ const ActionBar = () => {
   ]
 
   return (
-    <Dropdown menu={{ items }} placement="top">
+    <Dropdown menu={{ items }} placement="top" trigger={['click']}>
       <div className={styles.actionBarContainer}>
         <Avatar shape="square" style={{ marginRight: '15px' }} />
-        <div style={{ textAlign: 'center', marginRight: '10px' }}>
+        <div>
           <div className={styles.actionTitle}>超级管理员</div>
           <div className={styles.actionSubTitle}>超级管理员</div>
         </div>
-        <Down theme="outline" size="16" fill="#333" strokeWidth={3} strokeLinecap="square" />
       </div>
     </Dropdown>
   )
@@ -128,16 +138,26 @@ const ActionBar = () => {
 const CollapseButton = () => {
   const { styles } = useStyles()
 
+  const [collapseMenu, setCollapseMenu] = useAtom(appJotai.navCollapsedAtom)
+
+  const toggleCollapseMenu = () => {
+    setCollapseMenu(!collapseMenu)
+  }
+
   return (
-    <div className={styles.collapseButtonWrapper}>
-      <LeftBar theme="outline" size="20" fill="#000000" strokeWidth={4} />
-      {/* <RightBar theme="outline" size="20" fill="#000000" strokeWidth={4}/> */}
+    <div className={styles.collapseButtonWrapper} onClick={toggleCollapseMenu}>
+      {collapseMenu ? (
+        <LeftBar theme="outline" size="20" fill="#000000" strokeWidth={4} />
+      ) : (
+        <RightBar theme="outline" size="20" fill="#000000" strokeWidth={4} />
+      )}
     </div>
   )
 }
 
 export default function AppSider() {
   const { styles } = useStyles()
+  const collapseMenu = useAtomValue(appJotai.navCollapsedAtom)
   const title = import.meta.env.VITE_APP_TITLE
   const navigate = useNavigate()
   const { pathname } = useLocation()
@@ -156,12 +176,12 @@ export default function AppSider() {
     setOpenKeys([latestOpenKey])
   }
 
-  // React.useEffect(() => {
-  //   setSelectedKeys([pathname])
-  //   if (collapsed) {
-  //     setOpenKeys(getOpenKeys(pathname))
-  //   }
-  // }, [pathname, collapsed])
+  React.useEffect(() => {
+    setSelectedKeys([pathname])
+    if (collapseMenu) {
+      setOpenKeys(getOpenKeys(pathname))
+    }
+  }, [pathname, collapseMenu])
 
   React.useEffect(() => {
     const filterAndConvertMenuByPerms = (
@@ -209,8 +229,7 @@ export default function AppSider() {
     <>
       <div className={styles.siderLogo}>
         <img src={AppLogo} alt="logo" />
-        <span className={styles.siderTitle}>{title}</span>
-        {/* {collapsed && <span className={styles.logoTitle}>{title}</span>} */}
+        {collapseMenu && <span className={styles.siderTitle}>{title}</span>}
       </div>
       <div className={styles.siderMenu}>
         <Menu
@@ -226,7 +245,7 @@ export default function AppSider() {
         />
       </div>
       <div className={styles.siderAction}>
-        <ActionBar />
+        {collapseMenu && <ActionBar />}
         <CollapseButton />
       </div>
     </>
