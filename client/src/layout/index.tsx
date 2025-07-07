@@ -19,6 +19,9 @@ const useStyles = createStyles(() => {
       display: 'flex',
       height: '100vh',
       boxShadow: '7px 0px 7px 0px rgba(0, 0, 0, 0.3)'
+    },
+    content: {
+      background: '#ffffff'
     }
   }
 })
@@ -47,7 +50,7 @@ export default function AppLayout() {
         </ProfileContext.Provider>
       </Sider>
 
-      <Content>
+      <Content className={styles.content}>
         <Outlet />
       </Content>
     </Layout>
