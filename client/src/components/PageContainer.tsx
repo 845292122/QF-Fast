@@ -28,6 +28,9 @@ const useStyles = createStyles(() => {
     },
     container: {
       overflow: 'auto'
+    },
+    actionWrapper: {
+      paddingRight: 20
     }
   }
 })
@@ -43,16 +46,18 @@ export default function PageContainer({ children, actionBar }: Props) {
           <div
             style={{
               borderRadius: '0.5rem',
-              height: '20px',
-              width: '4px',
+              height: '25px',
+              width: '6px',
               marginRight: '10px',
               marginLeft: '5px',
               backgroundColor: '#1d1db7'
             }}
           />
-          <Typography.Text>{routeMeta.title}</Typography.Text>
+          <Typography.Text strong style={{ fontSize: 16 }}>
+            {routeMeta.title}
+          </Typography.Text>
         </div>
-        <div>{actionBar}</div>
+        <div className={styles.actionWrapper}>{actionBar}</div>
       </div>
       <div className={styles.content}>{children}</div>
     </div>
