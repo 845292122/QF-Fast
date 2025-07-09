@@ -28,12 +28,12 @@ export class AccountController {
     return await this.accountService.queryAccountInfo(id)
   }
 
-  @Post('/add', { summary: '添加账户' })
+  @Post('/create', { summary: '添加账户' })
   async add(@Body() account: AccountDTO) {
     await this.accountService.addAccount(account)
   }
 
-  @Post('/modify', { summary: '修改账户' })
+  @Post('/update', { summary: '修改账户' })
   async modify(@Body() account: AccountDTO) {
     await this.accountService.modifyAccount(account)
   }
