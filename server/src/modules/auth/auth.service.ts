@@ -34,7 +34,7 @@ export class AuthService {
       throw new Error('账户被禁用')
     }
 
-    if (!(await bcrypt.compare(password, account.password))) {
+    if (!(await bcrypt.compare(password, account.passwordHash))) {
       this.logger.warn('密码不正确:' + phone)
       throw new Error('账号或密码不正确')
     }
@@ -42,7 +42,7 @@ export class AuthService {
     const payload = {
       id: account.id,
       ip: this.ctx.request.ip,
-      isAdmin: account.isPlatformAdmin
+      type: account.type
     }
     return await this.jwtService.sign(payload, this.jwtConfig.secret)
   }

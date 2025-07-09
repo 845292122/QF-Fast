@@ -11,13 +11,13 @@ export class AccountService {
   async queryAccountPage(
     { page, pageSize }: IPage,
     contact: string,
-    storeName: string,
+    shopName: string,
     status: number,
     isPremium: number
   ): Promise<IPage<AccountDTO>> {
     const condition: Prisma.AccountWhereInput = {
       contact: contact ? { startsWith: contact } : undefined,
-      storeName: storeName ? { startsWith: storeName } : undefined,
+      shopName: shopName ? { startsWith: shopName } : undefined,
       status: status ?? undefined,
       isPremium,
       delFlag: 0

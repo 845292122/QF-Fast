@@ -16,11 +16,11 @@ export class AccountController {
     @Query('page', [ParseIntPipe]) page: number = 1,
     @Query('pageSize', [ParseIntPipe]) pageSize: number = 10,
     @Query('contact') contact?: string,
-    @Query('storeName') storeName?: string,
+    @Query('shopName') shopName?: string,
     @Query('status') status?: number,
     @Query('isPremium') isPremium?: number
   ): Promise<IPage> {
-    return await this.accountService.queryAccountPage({ page, pageSize }, contact, storeName, status, isPremium)
+    return await this.accountService.queryAccountPage({ page, pageSize }, contact, shopName, status, isPremium)
   }
 
   @Get('/:id', { summary: '账户详情' })

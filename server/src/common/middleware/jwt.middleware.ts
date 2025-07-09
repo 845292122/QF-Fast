@@ -35,15 +35,15 @@ export class JwtMiddleware {
           const payload = await this.jwtService.verify(token)
 
           // 判断 payload 是否为对象且包含 ip 属性
-          if (typeof payload === 'object' && payload !== null && 'ip' in payload) {
-            if (!payload.ip || payload.ip !== ctx.ip) {
-              this.logger.info('token 验证失败')
-              throw new httpError.UnauthorizedError()
-            }
-          } else {
-            this.logger.info('token 验证失败')
-            throw new httpError.UnauthorizedError()
-          }
+          // if (typeof payload === 'object' && payload !== null && 'ip' in payload) {
+          //   if (!payload.ip || payload.ip !== ctx.ip) {
+          //     this.logger.info('token 验证失败')
+          //     throw new httpError.UnauthorizedError()
+          //   }
+          // } else {
+          //   this.logger.info('token 验证失败')
+          //   throw new httpError.UnauthorizedError()
+          // }
 
           // 挂载载荷信息
           ctx.state.user = payload

@@ -16,10 +16,10 @@ export class AccountDTO {
   contact?: string
 
   @Rule(RuleType.string().optional().empty(null))
-  storeName?: string
+  shopName?: string
 
   @Rule(RuleType.string().optional().empty(null))
-  licenseNumber?: string
+  creditCode?: string
 
   @Rule(RuleType.string().optional().empty(null))
   address?: string
@@ -27,26 +27,20 @@ export class AccountDTO {
   @Rule(RuleType.string().optional().empty(null))
   domain?: string
 
+  @Rule(RuleType.date().optional().empty(null))
+  birthday?: Date
+
+  @Rule(RuleType.string().optional().empty(null))
+  avatar?: string
+
   @Rule(RuleType.number().default(0))
-  isPlatformAdmin?: number
+  type?: number
 
   @Rule(RuleType.string().optional().empty(null))
   email?: string
 
   @Rule(RuleType.number().default(0))
   status?: number
-
-  @Rule(RuleType.date().optional().empty(null))
-  trialStartDate?: Date
-
-  @Rule(RuleType.date().optional().empty(null))
-  trialEndDate?: Date
-
-  @Rule(RuleType.date().optional().empty(null))
-  startDate?: Date
-
-  @Rule(RuleType.date().optional().empty(null))
-  endDate?: Date
 
   @Rule(RuleType.string().optional().empty(null))
   loginIP?: string
@@ -59,6 +53,12 @@ export class AccountDTO {
 
   @Rule(RuleType.number().default(0))
   isPremium?: number
+
+  @Rule(RuleType.date().optional().empty(null))
+  startDate?: Date
+
+  @Rule(RuleType.date().optional().empty(null))
+  endDate?: Date
 
   @Rule(RuleType.date().optional().empty(null))
   createdAt?: Date
