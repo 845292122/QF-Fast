@@ -62,9 +62,12 @@ const useStyles = createStyles(theme => {
       cursor: 'pointer',
       padding: '7px'
     },
+    actionTitleDiv: {
+      lineHeight: '16px'
+    },
     actionTitle: {
-      fontSize: '14px',
-      fontWeight: '500'
+      fontSize: '12px',
+      fontWeight: '600'
     },
     actionSubTitle: {
       fontSize: '12px',
@@ -126,7 +129,7 @@ const ActionBar = () => {
     <Dropdown menu={{ items }} placement="top" trigger={['click']}>
       <div className={styles.actionBarContainer}>
         <Avatar shape="square" style={{ marginRight: '15px' }} />
-        <div>
+        <div className={styles.actionTitleDiv}>
           <div className={styles.actionTitle}>超级管理员</div>
           <div className={styles.actionSubTitle}>超级管理员</div>
         </div>

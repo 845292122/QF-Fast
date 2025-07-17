@@ -1,4 +1,5 @@
 import { Button, Flex, Form, Input, Select, Table } from 'antd'
+import InfoDrawer, { InfoDrawerFieldType } from '~/components/InfoDrawer'
 import PageContainer from '~/components/PageContainer'
 
 const ActionBar = () => {
@@ -6,6 +7,21 @@ const ActionBar = () => {
 }
 
 export default function Account() {
+  const infoFields: InfoDrawerFieldType[] = [
+    {
+      name: 'id',
+      label: 'ID',
+      type: 'input',
+      span: 0
+    },
+    {
+      name: 'contactName',
+      label: '联系人',
+      type: 'input',
+      rules: [{ required: true, message: '联系人不能为空' }]
+    }
+  ]
+
   return (
     <PageContainer actionBar={<ActionBar />}>
       {/* 查询区域 */}
@@ -47,6 +63,8 @@ export default function Account() {
         <Table.Column title="开始时间" dataIndex="startDate" key="startDate" />
         <Table.Column title="结束时间" dataIndex="endDate" key="endDate" />
       </Table>
+
+      {/* <InfoDrawer<typeof > /> */}
     </PageContainer>
   )
 }
